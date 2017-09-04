@@ -11,7 +11,8 @@ namespace RemoteControlRobot
     {
         static void Main(string[] args)
         {
-            string url = "138.227.54.195";
+            //string url = "192.168.54.108";
+            string url = "localhost";
             var rightArm = new RemoteRobot(url, "T_ROB_R", RobotClientProvider.GetHttpClient(url));
             var leftArm = new RemoteRobot(url, "T_ROB_L", RobotClientProvider.GetHttpClient(url));
 
