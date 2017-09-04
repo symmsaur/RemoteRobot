@@ -11,12 +11,20 @@ namespace RemoteControlRobot
     {
         static void Main(string[] args)
         {
-            var robot = new RemoteRobot("138.227.54.195", "T_ROB_R");
-            robot.RunProcedure("wavehigh").Wait();
-            robot.RunProcedure("wavehigh").Wait();
-            robot.RunProcedure("wavehigh").Wait();
-            robot.RunProcedure("wavehigh").Wait();
-            robot.RunProcedure("wavelow").Wait();
+            string url = "138.227.54.195";
+            var rightArm = new RemoteRobot(url, "T_ROB_R", RobotClientProvider.GetHttpClient(url));
+            var leftArm = new RemoteRobot(url, "T_ROB_L", RobotClientProvider.GetHttpClient(url));
+
+            Task.WhenAll(
+                rightArm.RunProcedure("wavehigh"),
+                leftArm.RunProcedure("wavelow"))
+                .Wait();
+            Console.WriteLine("Flip");
+            Task.Delay(2000).Wait();
+            Task.WhenAll(
+                rightArm.RunProcedure("wavelow"),
+                leftArm.RunProcedure("wavehigh"))
+                .Wait();
 
             Console.WriteLine("Done");
 

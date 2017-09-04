@@ -19,21 +19,17 @@ namespace RemoteRobotLib
 
         const string ModuleName = "Remote";
 
-        public RemoteRobot(string url, string taskName)
+        public RemoteRobot(string url, string taskName, HttpClient client)
         {
             _url = url;
             _taskName = taskName;
-            var credentialCache = new CredentialCache();
-            credentialCache.Add(new Uri($"http://{url}/rw"), "Digest",
-                new NetworkCredential("Default User", "robotics"));
-            var httpClientHandler = new HttpClientHandler();
-            _client = new HttpClient(new HttpClientHandler { Credentials = credentialCache });
+            _client = client;
         }
 
         public async Task RunProcedure(string procedureName)
         {
             await SetStringVariable("name", $"\"{procedureName}\"");
-            await Task.Delay(1000);
+            //await Task.Delay(1000);
             await SetBoolVariable("start", true);
             await WaitForBoolValue("start", false);
             await WaitForBoolValue("running", false);
